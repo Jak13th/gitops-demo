@@ -13,8 +13,8 @@ spec:
     server: https://kubernetes.default.svc   # = le cluster local (in-cluster)
     namespace: hello
   syncPolicy:
-    automated: true              # ArgoCD synchronise automatiquement les changements
+    automated:                   # ArgoCD synchronise automatiquement les changements
       prune: true                # ArgoCD supprime les ressources qui ne sont plus définies dans Git
-      selfHeal: true              # ArgoCD restaure automatiquement l'état désiré si des dérives sont détectées
+      selfHeal: true             # ArgoCD restaure automatiquement l'état désiré si des dérives sont détectées
     syncOptions:
       - CreateNamespace=true     # ArgoCD crée le namespace s'il n'existe pas
