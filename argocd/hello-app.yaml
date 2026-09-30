@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello
+  namespace: argocd              # les Applications vivent dans le namespace d'ArgoCD
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jak13th/gitops-demo.git
+    targetRevision: main         # branche, tag ou commit à suivre
+    path: apps/hello             # dossier contenant les manifests
+  destination:
+    server: https://kubernetes.default.svc   # = le cluster local (in-cluster)
+    namespace: hello
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true     # ArgoCD crée le namespace s'il n'existe pas
