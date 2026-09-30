@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  labels:
+    app: hello
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello            # le Deployment gère les Pods qui ont ce label
+  template:                 # le modèle des Pods à créer
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports:
+            - containerPort: 80
+          resources:        # bonne pratique : toujours déclarer les ressources
+            requests:
+              cpu: 50m      # 0,05 cœur réservé
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          readinessProbe:   # le Pod ne reçoit du trafic que s'il répond
+            httpGet:
+              path: /
+              port: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: html
+          configMap:
+            name: hello-html
